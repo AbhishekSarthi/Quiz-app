@@ -8,37 +8,37 @@ const fs = require('fs');
 
 const rawData = [];
 
-// fs.createReadStream('data.csv')
-//     .pipe(csv())
-//     .on('data', (row) => {
-//         // console.log(row);
-//         rawData.push(row);
-//     })
-//     .on('end', async () => {
-//         // console.log('raw daat', rawData[0].username);
-//         for (const i in rawData) {
-//             // console.log(rawData[i]);
+fs.createReadStream('data.csv')
+    .pipe(csv())
+    .on('data', (row) => {
+        // console.log(row);
+        rawData.push(row);
+    })
+    .on('end', async () => {
+        // console.log('raw daat', rawData[0].username);
+        for (const i in rawData) {
+            // console.log(rawData[i]);
 
-//             const sendData = new Admin({
-//                 question: rawData[i].question,
-//                 option1: rawData[i].option1,
-//                 option2: rawData[i].option2,
-//                 option3: rawData[i].option3,
-//                 option4: rawData[i].option4,
-//                 answer: rawData[i].answer,
-//                 hint: rawData[i].hint,
-//             });
-//             try {
-//                 const savedData = await sendData.save();
-//                 // res.json(savedData); // RESPONSE FOR CONSOLE
-//                 console.log(savedData);
-//             } catch (err) {
-//                 // res.json({ message: err }); // RESPONSE FOR CONSOLE
-//                 console.log(err);
-//             }
-//         }
-//         console.log('CSV file successfully processed');
-//     });
+            const sendData = new Admin({
+                question: rawData[i].question,
+                option1: rawData[i].option1,
+                option2: rawData[i].option2,
+                option3: rawData[i].option3,
+                option4: rawData[i].option4,
+                answer: rawData[i].answer,
+                hint: rawData[i].hint,
+            });
+            try {
+                const savedData = await sendData.save();
+                // res.json(savedData); // RESPONSE FOR CONSOLE
+                console.log(savedData);
+            } catch (err) {
+                // res.json({ message: err }); // RESPONSE FOR CONSOLE
+                console.log(err);
+            }
+        }
+        console.log('CSV file successfully processed');
+    });
 
 //get all data
 router.get('/', async (req, res) => {
