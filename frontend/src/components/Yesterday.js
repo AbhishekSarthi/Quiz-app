@@ -5,7 +5,7 @@ const Yesterday = () => {
     const [data, setData] = useState([]);
     const [res, setRes] = useState('');
     const [prev, setPrev] = useState('');
-    const [noUser, setNoUser] = userState(0);
+    const [noUser, setNoUser] = useState(0);
 
     let optionA = 0;
     let optionB = 0;
