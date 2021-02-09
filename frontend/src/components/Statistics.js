@@ -4,10 +4,10 @@ import name from './name';
 // import { findOneAndRemove } from '../../../backend/models/db';
 
 const Statistics = () => {
-    // let optionA = 0;
-    // let optionB = 0;
-    // let optionC = 0;
-    // let optionD = 0;
+    let optionA = 0;
+    let optionB = 0;
+    let optionC = 0;
+    let optionD = 0;
 
     const [gp, setGp] = useState([]);
     const [score, setScore] = useState([]);
@@ -16,32 +16,95 @@ const Statistics = () => {
     const [deviance, setDeviance] = useState([]);
     const [siteDeviance, setSiteDeviance] = useState([]);
     const [rank, setRank] = useState([]);
+    const [res, setRes] = useState('b');
+
     useEffect(() => {
         const getData = async () => {
             const data = await axios.get('/details/user');
+            const quesData = await axios.get('/details/questions');
+            // console.log(quesData.data);
             // name.answer = answer;
             // console.log(data.data);
-            // console.log(name);
+
+            let rawSiteConsistency = 0;
+            let rawSiteDeviance = 0;
+            data.data.forEach((d) => {
+                // console.log(d.answer);
+                console.log(d);
+                rawSiteConsistency += d.siteConsistency;
+                rawSiteDeviance += d.siteDeviance;
+                if (d.answer === 'A') optionA++;
+                if (d.answer === 'B') optionB++;
+                if (d.answer === 'C') optionC++;
+                if (d.answer === 'D') optionD++;
+            });
+            console.log(optionA, optionB, optionC, optionD);
+            console.log(rawSiteConsistency, rawSiteDeviance);
+
+            if (
+                optionA >= optionB &&
+                optionA >= optionC &&
+                optionA >= optionD
+            ) {
+                setRes('A');
+            }
+            if (
+                optionB >= optionA &&
+                optionB >= optionC &&
+                optionB >= optionD
+            ) {
+                setRes('B');
+            }
+            if (
+                optionC >= optionB &&
+                optionC >= optionA &&
+                optionC >= optionD
+            ) {
+                setRes('C');
+            }
+            if (optionD > optionB && optionD > optionC && optionD > optionA) {
+                setRes('D');
+            }
+
+            // console.log(res);
             data.data.forEach((d) => {
                 if (
                     d.username === name.username &&
                     d.password === name.password
                 ) {
                     name._id = d._id;
-                    // console.log(name._id);
+                    console.log(name._id);
                 }
             });
             // console.log('nam', name);
+
             const rawData = await axios.get(`/details/user/${name._id}`);
             // const finalData = data.data[data.data.length - 1];
             const newData = rawData.data;
             // console.log(newData);
+
+            console.log(newData.answer, res);
+            if (res === newData.answer) {
+                newData.score = newData.score + 10;
+                console.log(newData.score);
+                setScore(newData.score);
+                setConsistency(
+                    (newData.consistency + 100) / newData.gameplayed
+                );
+            } else {
+                setScore(newData.score);
+                console.log(newData.score);
+                setConsistency(newData.consistency / newData.gameplayed);
+            }
+
+            setDeviance(1 - newData.consistency / newData.gameplayed);
+
             setGp(newData.gameplayed);
-            setScore(newData.score);
-            setConsistency(newData.consistency);
-            setSiteConsistency(newData.siteConsistency);
-            setDeviance(newData.deviance);
-            setSiteDeviance(newData.siteDeviance);
+            // setScore(newData.score);
+            // setConsistency(newData.consistency);
+            setSiteConsistency(rawSiteConsistency);
+            // setDeviance(newData.deviance);
+            setSiteDeviance(100 - rawSiteDeviance);
             setRank(newData.rank);
             // data.forEach((d) => {
             //     // console.log(d.answer);
@@ -61,7 +124,7 @@ const Statistics = () => {
             // setRank(finalData.rank);
         };
         getData();
-    });
+    }, []);
     return (
         <div className="mb-2 mt-2">
             <div className="statistics">

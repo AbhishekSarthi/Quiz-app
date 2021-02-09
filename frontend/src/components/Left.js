@@ -19,8 +19,8 @@ const Left = () => {
     const sendData = async () => {
         const data = await axios.get('/details/user');
         // name.answer = answer;
-        // console.log(data.data);
-        // console.log(name);
+        console.log(data.data);
+        console.log(name);
         data.data.forEach((d) => {
             if (d.username === name.username && d.password === name.password) {
                 name._id = d._id;
@@ -37,7 +37,7 @@ const Left = () => {
         name.deviance = raw.data.deviance;
         name.siteDeviance = raw.data.siteDeviance;
         name.rank = raw.data.rank;
-        name.prevAns = raw.data.prevAns;
+        name.prevAns = raw.data.answer;
         name.answer = answer;
         // console.log('rae', name);
 

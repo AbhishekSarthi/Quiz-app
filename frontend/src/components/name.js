@@ -10,6 +10,6 @@ const name = {
     siteConsistency: 0,
     deviance: 0,
     siteDeviance: 0,
-    rank: 100,
+    rank: 1,
 };
 export default name;
