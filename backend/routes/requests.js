@@ -1,6 +1,44 @@
 const express = require('express');
 const Admin = require('../models/db');
 const router = express.Router();
+const csv = require('csv-parser');
+const fs = require('fs');
+
+// console.log(Date.now());
+
+const rawData = [];
+
+// fs.createReadStream('data.csv')
+//     .pipe(csv())
+//     .on('data', (row) => {
+//         // console.log(row);
+//         rawData.push(row);
+//     })
+//     .on('end', async () => {
+//         // console.log('raw daat', rawData[0].username);
+//         for (const i in rawData) {
+//             // console.log(rawData[i]);
+
+//             const sendData = new Admin({
+//                 question: rawData[i].question,
+//                 option1: rawData[i].option1,
+//                 option2: rawData[i].option2,
+//                 option3: rawData[i].option3,
+//                 option4: rawData[i].option4,
+//                 answer: rawData[i].answer,
+//                 hint: rawData[i].hint,
+//             });
+//             try {
+//                 const savedData = await sendData.save();
+//                 // res.json(savedData); // RESPONSE FOR CONSOLE
+//                 console.log(savedData);
+//             } catch (err) {
+//                 // res.json({ message: err }); // RESPONSE FOR CONSOLE
+//                 console.log(err);
+//             }
+//         }
+//         console.log('CSV file successfully processed');
+//     });
 
 //get all data
 router.get('/', async (req, res) => {
@@ -33,6 +71,15 @@ router.post('/login', async (req, res) => {
     const data = new Admin({
         username: req.body.username,
         password: req.body.password,
+        score: 0,
+        answer: '',
+        prevAns: '',
+        gameplayed: 0,
+        consistency: 0,
+        siteConsistency: 0,
+        deviance: 0,
+        siteDeviance: 0,
+        rank: 2,
     });
     console.log(data.password);
     //if(user found)
@@ -121,12 +168,12 @@ router.patch('/user/:key', async (req, res) => {
             { $set: { prevAns: req.body.name.prevAns } },
             { $set: { answer: req.body.name.answer } },
             { $set: { question: req.body.name.question } },
-            { $set: { score: req.body.name.score + 10 } },
+            { $set: { score: req.body.name.score } },
             { $set: { gameplayed: req.body.name.gameplayed + 1 } },
-            { $set: { consistency: req.body.name.consistency + 1 } },
-            { $set: { siteConsistency: req.body.name.siteConsistency + 1 } },
-            { $set: { deviance: req.body.name.deviance + 1 } },
-            { $set: { siteDeviance: req.body.name.siteDeviance + 1 } },
+            { $set: { consistency: req.body.name.consistency } },
+            { $set: { siteConsistency: req.body.name.siteConsistency } },
+            { $set: { deviance: req.body.name.deviance } },
+            { $set: { siteDeviance: req.body.name.siteDeviance } },
         ]);
         // console.log(updatedData);
         res.json(updatedData);
@@ -156,26 +203,35 @@ router.patch('/user/:key', async (req, res) => {
     //     }
 });
 
-//Post data {ONly for admin}{auth later}
-router.post('/admin', async (req, res) => {
-    const data = new Admin({
-        question: req.body.question,
-        option1: req.body.option1,
-        option2: req.body.option2,
-        option3: req.body.option3,
-        option4: req.body.option4,
-        answer: req.body.answer,
-        hint: req.body.hint,
-    });
+let rawDate = new Date().getHours();
+function waitTime() {
+    // let hour = rawDate.getTime();jsonDate
+    // console.log(29 - rawDate);
 
-    try {
-        const savedData = await data.save();
-        res.json(savedData); // RESPONSE FOR CONSOLE
-        console.log(savedData);
-    } catch (err) {
-        res.json({ message: err }); // RESPONSE FOR CONSOLE
-        console.log(err);
-    }
-});
+    //Post data {ONly for admin}{auth later}
+    router.post('/admin', async (req, res) => {
+        const data = new Admin({
+            question: req.body.question,
+            option1: req.body.option1,
+            option2: req.body.option2,
+            option3: req.body.option3,
+            option4: req.body.option4,
+            answer: req.body.answer,
+            hint: req.body.hint,
+            // date: Date.now(),
+        });
+
+        try {
+            const savedData = await data.save();
+            res.json(savedData); // RESPONSE FOR CONSOLE
+            console.log(savedData);
+        } catch (err) {
+            res.json({ message: err }); // RESPONSE FOR CONSOLE
+            console.log(err);
+        }
+    });
+}
+
+setTimeout(waitTime, 3600000 * (29 - rawDate));
 
 module.exports = router;

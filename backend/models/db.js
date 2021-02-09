@@ -49,6 +49,9 @@ const Admin = mongoose.Schema({
     rank: {
         type: Number,
     },
+    date: {
+        type: Date,
+    },
 });
 
 module.exports = mongoose.model('Admin', Admin);
