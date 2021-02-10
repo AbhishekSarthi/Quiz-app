@@ -16,7 +16,7 @@ const Statistics = () => {
     const [deviance, setDeviance] = useState([]);
     const [siteDeviance, setSiteDeviance] = useState([]);
     const [rank, setRank] = useState([]);
-    const [res, setRes] = useState('b');
+    const [res, setRes] = useState('');
 
     useEffect(() => {
         const getData = async () => {
@@ -30,7 +30,7 @@ const Statistics = () => {
             let rawSiteDeviance = 0;
             data.data.forEach((d) => {
                 // console.log(d.answer);
-                console.log(d);
+                // console.log(d);
                 rawSiteConsistency += d.siteConsistency;
                 rawSiteDeviance += d.siteDeviance;
                 if (d.answer === 'A') optionA++;
@@ -38,8 +38,8 @@ const Statistics = () => {
                 if (d.answer === 'C') optionC++;
                 if (d.answer === 'D') optionD++;
             });
-            console.log(optionA, optionB, optionC, optionD);
-            console.log(rawSiteConsistency, rawSiteDeviance);
+            // console.log(optionA, optionB, optionC, optionD);
+            // console.log(rawSiteConsistency, rawSiteDeviance);
 
             if (
                 optionA >= optionB &&
@@ -73,7 +73,7 @@ const Statistics = () => {
                     d.password === name.password
                 ) {
                     name._id = d._id;
-                    console.log(name._id);
+                    // console.log(name._id);
                 }
             });
             // console.log('nam', name);
@@ -83,17 +83,17 @@ const Statistics = () => {
             const newData = rawData.data;
             // console.log(newData);
 
-            console.log(newData.answer, res);
+            // console.log(newData.answer, res);
             if (res === newData.answer) {
                 newData.score = newData.score + 10;
-                console.log(newData.score);
+                // console.log(newData.score);
                 setScore(newData.score);
                 setConsistency(
                     (newData.consistency + 100) / newData.gameplayed
                 );
             } else {
                 setScore(newData.score);
-                console.log(newData.score);
+                // console.log(newData.score);
                 setConsistency(newData.consistency / newData.gameplayed);
             }
 
@@ -105,7 +105,7 @@ const Statistics = () => {
             setSiteConsistency(rawSiteConsistency);
             // setDeviance(newData.deviance);
             setSiteDeviance(100 - rawSiteDeviance);
-            setRank(newData.rank);
+            setRank(newData.rank + 1);
             // data.forEach((d) => {
             //     // console.log(d.answer);
             //     if (d.answer === 'A') optionA++;

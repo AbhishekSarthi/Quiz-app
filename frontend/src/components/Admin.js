@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Question from './UploadQuestion';
 
 const Admin = () => {
     const [questiona, setQuestiona] = useState([]);
@@ -72,6 +73,26 @@ const Admin = () => {
             />
 
             <button onClick={() => submitData()}>Submit</button>
+
+            <br />
+            <br />
+
+            <div className="admin-pannel">
+                {/* <h4>Upoad Question for tommorrow</h4>
+                <button disabled>Upload</button> */}
+                <Question />
+                <h4>question and answers until now</h4>
+                <button>
+                    <a
+                        className="btn btn-primary btn-file"
+                        href="http://localhost:5000/details/questions"
+                        target="_blank"
+                        download
+                    >
+                        Open
+                    </a>
+                </button>
+            </div>
         </>
     );
 };
