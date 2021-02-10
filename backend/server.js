@@ -4,30 +4,30 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 require('dotenv/config');
+const PORT = process.env.NODE_ENV || 5000;
 
 const app = express();
 
-app.use(express.json());
-
+//home page
 //home page
 app.get('/', (req, res) => {
     res.send('home page');
 });
 
+app.use(express.json());
+
 //details page
 app.use('/details', requests);
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/build')));
+    app.use(express.static('frontend/build'));
 
     app.get('*', (req, res) => {
-        res.sendFile(
-            path.resolve(__dirname, 'frontend', 'build', 'index.html')
-        );
+        res.sendFile(path.resolve('frontend', 'build', 'index.html'));
     });
-} else {
-    app.listen(5000, console.log('Server running on port 5000'));
 }
+
+app.listen(PORT, console.log(`Server running on port ${PORT}`));
 
 // fastcsv
 //   .write(data, { headers: true })
