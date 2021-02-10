@@ -80,7 +80,7 @@ const Regist = () => {
                                 </button>
                             </Link>
                         )}
-                        <Link to="/">
+                        <Link to="/user">
                             <button
                                 className="buttonC  mb-4 text-right"
                                 onClick={() => submitData()}

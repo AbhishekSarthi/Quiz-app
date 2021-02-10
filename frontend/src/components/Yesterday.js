@@ -60,14 +60,10 @@ const Yesterday = () => {
             ) {
                 setRes('C');
             }
-            if (
-                optionD >= optionB &&
-                optionD >= optionC &&
-                optionD >= optionA
-            ) {
+            if (optionD > optionB && optionD > optionC && optionD > optionA) {
                 setRes('D');
             }
-            console.log('res', res);
+            // console.log('res', res);
         };
 
         getData();

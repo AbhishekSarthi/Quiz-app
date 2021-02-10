@@ -29,7 +29,8 @@ const Left = () => {
         });
 
         const raw = await axios.get(`/details/user/${name._id}`);
-        // console.log('era', raw.data);
+        console.log('era', raw.data);
+
         name.score = raw.data.score;
         name.gameplayed = raw.data.gameplayed;
         name.consistency = raw.data.consistency;
